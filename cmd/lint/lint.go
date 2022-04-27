@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"golang.org/x/tools/go/loader"
+	// "golang.org/x/tools/go/packages"
 )
 
 var (
@@ -30,7 +31,7 @@ func init() {
 	flag.Parse()
 
 	// add zerolog to recursively ignored packages
-	recursivelyIgnoredPkgs = append(recursivelyIgnoredPkgs, "github.com/rs/zerolog")
+	recursivelyIgnoredPkgs = append(recursivelyIgnoredPkgs, "github.com/MonikaCat/zerolog")
 	args := flag.Args()
 	if len(args) != 1 {
 		fmt.Fprintln(os.Stderr, "you must provide exactly one package path")
@@ -52,7 +53,7 @@ func main() {
 	// get the github.com/rs/zerolog.Event type
 	event := getEvent(p)
 	if event == nil {
-		fmt.Fprintln(os.Stderr, "Error: github.com/rs/zerolog.Event declaration not found, maybe zerolog is not imported in the scanned package?")
+		fmt.Fprintln(os.Stderr, "Error: github.com/MonikaCat/zerolog.Event declaration not found, maybe zerolog is not imported in the scanned package?")
 		os.Exit(1)
 	}
 
@@ -80,7 +81,7 @@ func main() {
 
 func getEvent(p *loader.Program) types.Type {
 	for _, pkg := range p.AllPackages {
-		if strings.HasSuffix(pkg.Pkg.Path(), "github.com/rs/zerolog") {
+		if strings.HasSuffix(pkg.Pkg.Path(), "github.com/MonikaCat/zerolog") {
 			for _, d := range pkg.Defs {
 				if d != nil && d.Name() == "Event" {
 					return d.Type()
